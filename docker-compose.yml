@@ -1,0 +1,48 @@
+services:
+    web:
+      image: wordpress
+      depends_on:
+        - mysql
+      volumes:
+        - './wp/:/var/www/html'
+        - './facturabilidad:/var/www/html/wp-content/plugins/facturabilidad'
+      environment:
+        WORDPRESS_DB_HOST: 'mysql'
+        WORDPRESS_DB_USER: 'wordpress'
+        WORDPRESS_DB_PASSWORD: 'wordpress'
+        WORDPRESS_DB_NAME: 'wordpress'
+      ports:
+        - 8090:80
+      networks: 
+        - wps
+    mysql:
+      image: 'mysql/mysql-server:8.0'
+      volumes:
+        - wordpress-mysql:/var/lib/mysql
+      environment:
+        MYSQL_ROOT_PASSWORD: 'wordpress'
+        MYSQL_ROOT_HOST: '%'
+        MYSQL_HOST: '%'
+        MYSQL_DATABASE: 'wordpress'
+        MYSQL_USER: 'wordpress'
+        MYSQL_PASSWORD: 'wordpress'
+      networks:
+        - wps
+      ports:
+        - '${FORWARD_DB_PORT:-3306}:3306'
+      healthcheck:
+        test:
+          - CMD
+          - mysqladmin
+          - ping
+          - '-p'
+        retries: 3
+        timeout: 5s
+networks:
+  wps:
+    driver: bridge    
+volumes:
+  wordpress-mysql:
+    driver: local
+
+
