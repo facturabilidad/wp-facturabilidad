@@ -1,14 +1,17 @@
-function toggleEditar() {
-    var inputs = jQuery('.editable-pruebas');
-    var botonGuardar = jQuery('#guardarBtn');
-    var botonEditar = jQuery('#editarBtn');
-    var botonCancelar = jQuery('#cancelarBtn');
+jQuery(document).ready(function() {
+    var statusElement = jQuery('#status');
+    var status = statusElement.text();
+    console.log(status);
 
-    for (var i = 0; i < inputs.length; i++) {
-        inputs[i].disabled = !inputs[i].disabled;
+    if (status === 'Pruebas') {
+        statusElement.css({
+            'color': 'red',
+            'font-weight': 'bold'
+        });
+    } else {
+        statusElement.css({
+            'color': 'green',
+            'font-weight': 'bold'
+        });
     }
-
-    botonEditar.prop('disabled', function(i, v) { return !v; });
-    botonGuardar.prop('disabled', function(i, v) { return !v; });
-    botonCancelar.prop('disabled', function(i, v) { return !v; });
-}
+});
